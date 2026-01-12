@@ -127,7 +127,7 @@ When increasing the size of kernel filters in the spatial domain to express high
 
 ## 2. Mathematical Proof of the Proposed Algorithm
 <img width="1197" height="226" alt="screenshot 2026-01-12 170810" src="https://github.com/user-attachments/assets/df419188-f9d0-4516-8ab5-45eb5fde1d4a" />
-
+https://github.com/user-attachments/assets/e940ebfa-6fb9-4ad6-8c08-0bbdcf575ba1
 As shown in the image above, this research spatially extends atmospheric scattering laws to achieve superior realism compared to existing methods.
 
 ### (1) Heterogeneous 3D Transmittance Model Design

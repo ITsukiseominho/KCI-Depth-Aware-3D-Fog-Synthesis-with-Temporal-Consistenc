@@ -82,10 +82,8 @@ $$\beta_{\text{filtered}}(t) = \alpha \cdot \beta(t) + (1 - \alpha) \cdot \beta_
 ---
 
 논문 정보
-<img width="180" height="42" alt="h1_logo" src="https://github.com/user-attachments/assets/eb1de18b-f07f-4e9f-9c5c-64d17dc35156" align="left" style="margin-right: 15px;" />
+<img width="180" height="42" alt="h1_logo" src="https://github.com/user-attachments/assets/eb1de18b-f07f-4e9f-9c5c-64d17dc35156" />
 이 연구는 한국학술지인용색인(KCI) 등재지에 게재되었습니다.
 자세한 논문 정보는 KCI 포털에서 확인하실 수 있습니다.
-<br clear="left"/>
----
 
 © 2025 서민호. 본 연구의 모든 권리는 저자에게 있으며, 국립한국교통대학교 컴퓨터공학과 연구 성과물로 작성되었습니다.

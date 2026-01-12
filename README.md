@@ -27,10 +27,6 @@
 
 ## 2. 제안하는 알고리즘의 수학적 증명
 
-
-https://github.com/user-attachments/assets/e940ebfa-6fb9-4ad6-8c08-0bbdcf575ba1
-
-
 <img width="1197" height="226" alt="화면 캡처 2026-01-12 170810" src="https://github.com/user-attachments/assets/df419188-f9d0-4516-8ab5-45eb5fde1d4a" />
 
 위 사진같이 본 연구는 대기 산란 법칙을 공간적으로 확장하여 기존 기법들 보다 뛰어난 사실성을 확보했습니다.

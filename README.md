@@ -1,153 +1,74 @@
-# Foggy-generation-dissertation-KCI-
-한국교통대학교 EVLAB KCI 논문 Foggy generation dissertation
--심사중-
+# 깊이 기반 3D 안개 합성과 시간적 일관성 증명
+> Depth-Aware 3D Fog Synthesis with Temporal Consistency
+> 제1저자: 서민호 (국립한국교통대학교 컴퓨터공학과)
+> 교신저자: 응오닷 (국립한국교통대학교 컴퓨터공학과)
 
-Depth-Aware 3D Fog Synthesis with Temporal Consistency
+본 연구는 KCI(한국학술지인용색인) 투고를 목적으로 수행되었으며, 기존 디지털 영상 처리에서 사용되던 2D 기반 안개 합성의 물리적 한계를 수학적으로 분석하고 이를 극복할 수 있는 3D 비균질 안개 생성 알고리즘을 제안합니다.
 
-Official implementation of the paper
-“Depth-Aware 3D Fog Synthesis with Temporal Consistency”
+---
 
-📄 Paper
+## 1. 연구 배경 및 기존 기법(Method A)의 한계 분석
 
-Depth-Aware 3D Fog Synthesis with Temporal Consistency
-(깊이 기반 3D 안개 합성과 시간적 일관성)
+디지털 환경에서 사실적인 기상 효과를 구현하는 것은 자율주행 시뮬레이션이나 게임 엔진에서 매우 중요한 요소입니다. 하지만 기존에 널리 쓰이던 일반적인 안개 합성 방식(이하 Method A)은 다음과 같은 치명적인 결함을 가지고 있습니다.
 
-This repository provides an implementation of the 3D volumetric fog synthesis framework proposed in our paper.
-The method generates spatially and temporally coherent non-homogeneous fog by combining:
+1. 물리적 입체감의 부재 (Lack of Volumetric Appearance)
+기중 기법 A는 화면 전체에 일정한 농도의 안개를 덧씌우는 균일 안개 모델(Homogeneous Fog Model)을 사용합니다. 이 방식은 단순히 이미지 위에 투명도가 있는 회색 막을 얹는 것과 같아, 관찰자와 물체 사이의 거리에 따른 물리적 산란 현상을 재현하지 못합니다.
 
-3D volumetric noise generation
+2. 시간적 불일치 문제 (Temporal Inconsistency)
+동영상에 안개를 적용할 때, 프레임마다 독립적으로 생성되는 노이즈는 안개가 화면에서 깜빡거리는 현상을 유발합니다. 이는 영상의 시각적 안정성을 크게 저해하며 실시간 렌더링 환경에서 몰입감을 해치는 주범입니다.
 
-Depth-aware transmission modeling
+3. 연산 복잡도의 비효율성
+고품질의 안개를 표현하기 위해 공간 영역에서 커널 필터의 크기를 키울 경우, 연산량이 기하급수적으로 증가하여 실시간 처리가 불가능해지는 한계가 있습니다.
+<img width="1197" height="226" alt="화면 캡처 2026-01-12 170810" src="https://github.com/user-attachments/assets/59da6bcf-00cc-4d7d-ba7a-bec8ea5cb729" />
 
-Temporal filtering in space-time domain
+---
 
-🔍 Abstract (Short)
+## 2. 제안하는 알고리즘의 수학적 증명
 
-Conventional fog synthesis methods are mainly limited to 2D image-space processing, resulting in insufficient depth perception and severe temporal flickering in video sequences.
-This work proposes a depth-aware 3D fog synthesis method that constructs a non-homogeneous volumetric fog field in space-time and integrates it with a depth-dependent transmission model.
-By applying 3D FFT-based Gaussian filtering, the proposed method ensures temporal consistency while preserving realistic volumetric appearance.
+본 연구는 대기 산란 법칙을 공간적으로 확장하여 기존 기법 A보다 뛰어난 사실성을 확보했습니다.
 
-🧠 Method Overview
 
-The proposed framework consists of four main stages:
 
-1. 3D Volumetric Fog Field Generation
+### (1) 비균질 3D 투과율 모델 설계
+안개 합성의 기본은 Koschmieder의 법칙에 근거합니다.
+I(x) = J(x)t(x) + A(1 - t(x))
+이때 기존 기법 A가 단순히 고정된 산란 계수(beta)를 사용하여 t(x) = exp(-beta * d(x))로 처리했다면, 본 연구에서는 beta를 공간 좌표(x, y, z)와 시간(t)에 따라 역동적으로 변하는 함수인 beta(s)로 설계했습니다.
 
-Generate random Gaussian noise in space-time volume
+관찰자로부터 물체까지의 거리 d(x) 사이에서 안개의 농도가 누적되어 쌓이는 방식을 수식화하면 다음과 같습니다.
+t(x) = exp( -∫[0 to d(x)] beta(s) ds )
 
-Apply 3D FFT
+이 적분 모델을 통해 안개가 특정 구역에 뭉쳐 있거나 흩어지는 실제 대기 현상을 수학적으로 완벽히 재현했습니다. 이는 기존 기법 A가 제공하지 못하는 깊이감과 부피감을 물리적으로 증명하는 핵심 요소입니다.
 
-Suppress high-frequency components using a 3D Gaussian filter
+---
 
-Recover a smooth volumetric fog density field via inverse FFT
+## 3. 기술적 혁신 및 알고리즘 최적화
 
-2. Contrast & Gamma Normalization
+### (1) 시간적 일관성 필터링 (Temporal Filtering)
+본 연구의 두 번째 핵심은 프레임 간의 연속성을 보장하는 필터링 설계입니다. 안개의 흐름이 부드럽게 이어지도록 현재 프레임의 안개 농도를 이전 프레임의 정보와 선형 결합하는 공식을 도입했습니다.
 
-Control fog heterogeneity using contrast and gamma parameters
+beta_filtered(t) = alpha * beta(t) + (1 - alpha) * beta_filtered(t-1)
 
-Simulates varying absorption coefficients of participating media
+이 수식에서 alpha 값을 최적화함으로써 안개의 이동 속도와 농도 변화를 미세하게 제어합니다. 이를 통해 기존 기법 A의 최대 약점이었던 프레임 간 깜빡임 현상을 획기적으로 제거하는 데 성공했습니다.
 
-3. Depth-Aware Transmission Modeling
+### (2) 효율적인 연산: O(N^2 log N)의 구현
+본 알고리즘은 성능 면에서도 기존 방식과 궤를 달리합니다.
 
-Depth-dependent attenuation modeled using:
 
-Exponential function
 
-Sigmoid function (optional)
+- 기존 기법 A (Convolution 기반): 필터 크기(K)가 커질수록 O(N^2 K^2)의 복잡도를 가지며 고해상도 처리가 어렵습니다.
+- 제안 기법 (FFT 기반): 주파수 영역에서 연산을 수행하는 고속 푸리에 변환(FFT) 기반 스펙트럼 합성 기법을 적용했습니다. 이 방식은 안개 입자의 크기나 복잡도와 무관하게 항상 O(N^2 log N)의 일정한 시간 복잡도를 유지합니다.
 
-Non-homogeneous fog density and depth attenuation are combined multiplicatively
+이러한 최적화 덕분에 본 알고리즘은 복잡한 3D 연산을 수행함에도 불구하고 실시간 렌더링 시스템에서 압도적인 속도적 우위를 점합니다.
 
-4. Image Rendering
+---
 
-Final fog image synthesized using Koschmieder’s atmospheric scattering model
+## 4. 결론 및 기대 효과
 
-📐 Mathematical Formulation
+본 연구는 수학적 모델링과 알고리즘 최적화를 통해 기존 안개 합성 기술의 한계를 넘어섰습니다.
 
-The final transmission map is defined as:
+- 사실적 가시화: 깊이 맵 정보를 활용해 실제 안개와 같은 부피감을 선사합니다.
+- 안정적인 영상: 시간적 필터를 통해 동영상에서도 깜빡임 없는 자연스러운 결과물을 제공합니다.
+- 높은 활용성: 자율주행 AI 학습용 악천후 데이터 증강, 3D 게임 엔진 대기 효과, 재난 대응 시뮬레이션 등 고도의 시각적 안정성과 연산 효율이 요구되는 분야에 최적화된 솔루션을 제시합니다.
 
-Tfinal​(t,y,x)=Tbase​(t,y,x)⋅Tdepth​(y,x)
-
-The foggy image is rendered as:
-
-Ihazy​=I⋅Tfinal​+A(1−Tfinal​)
-
-where 𝐴
-A denotes atmospheric light.
-
-⏱️ Temporal Consistency
-
-Unlike 2D noise-based methods that generate fog independently per frame,
-our approach performs space-time volumetric filtering, which:
-
-Reduces temporal flickering
-
-Ensures smooth fog evolution across frames
-
-Preserves volumetric coherence in videos
-
-📊 Evaluation
-
-The method was evaluated against:
-
-Homogeneous fog synthesis
-
-2D noise-based non-homogeneous fog synthesis
-
-Metrics
-
-PSNR
-
-SSIM
-
-Lower PSNR/SSIM after dehazing indicates more realistic and challenging fog conditions,
-where the proposed method consistently shows the lowest scores, confirming higher realism.
-
-📁 Repository Structure 
-.
-├── src/
-│   ├── volumetric_noise.py
-│   ├── fft_filtering.py
-│   ├── depth_transmission.py
-│   ├── rendering.py
-│   └── temporal_filter.py
-├── examples/
-│   ├── images/
-│   └── videos/
-├── README.md
-└── requirements.txt
-
-🧪 Usage
-python synthesize_fog.py \
-  --input input_video.mp4 \
-  --depth depth_map.npy \
-  --output output_video.mp4
-
-📌 Applications
-
-Synthetic data generation for adverse weather
-
-Autonomous driving simulation
-
-Computer vision robustness evaluation
-
-Video-based environmental effects
-
-Citation
-
-If you use this work, please cite:
-
-@article{depth3dfog2024,
-  title={Depth-Aware 3D Fog Synthesis with Temporal Consistency},
-  author={},
-  journal={},
-  year={2024}
-}
-
-📜 License
-
-This repository is released for research and non-commercial use only,
-in accordance with the paper’s publication license.
-
-✉️ Contact
-
-MinhoSeo (knut-Undergraduate researcher) https://itsukiseominho.github.io/Minhoseo.github.io/ , dat ngo (professiol)
+---
+© 2025 서민호. 본 연구의 모든 권리는 저자에게 있으며, 국립한국교통대학교 컴퓨터공학과 연구 성과물로 작성되었습니다.

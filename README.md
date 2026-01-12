@@ -82,7 +82,7 @@ $$\beta_{\text{filtered}}(t) = \alpha \cdot \beta(t) + (1 - \alpha) \cdot \beta_
 ---
 
 **논문 정보**
-
+https://www.kci.go.kr/kciportal/resources/newkci/image/kor/title/h1_logo.png
 이 연구는 [한국학술지인용색인(KCI) 등재지](https://www.kci.go.kr/)에 게재되었습니다.  
 자세한 논문 정보는 [KCI 포털](논문_링크_URL)에서 확인하실 수 있습니다.
 

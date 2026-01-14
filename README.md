@@ -193,3 +193,4 @@ Detailed paper information can be found on the [KCI Portal](논문_링크_URL).
 ---
 
 © 2026 Minho Seo. All rights reserved. This research was conducted as a research output of the Department of Computer Engineering, Korea National University of Transportation.
+commit

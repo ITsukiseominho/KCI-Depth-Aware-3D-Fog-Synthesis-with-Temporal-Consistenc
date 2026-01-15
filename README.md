@@ -3,7 +3,7 @@
 [![KCI](https://img.shields.io/badge/KCI-등재지-blue)](https://www.kci.go.kr/)
 
 > Depth-Aware 3D Fog Synthesis with Temporal Consistency  
-> 제1저자: 서민호, 박정민 (국립한국교통대학교 컴퓨터공학과)
+> 제1저자: 서민호, 박정민 (국립한국교통대학교 컴퓨터공학과)<br>
 > 공저자: 김예은, 유성식 (국립한국교통대학교 컴퓨터공학과)  
 > 교신저자: Dat Ngo (국립한국교통대학교 컴퓨터공학과)
 
